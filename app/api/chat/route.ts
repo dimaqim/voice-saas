@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { openai } from "@/lib/openai";
+import OpenAI from "openai";
 import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
@@ -36,6 +36,8 @@ export async function POST(req: Request) {
   if (!messages?.length) {
     return NextResponse.json({ error: "messages required" }, { status: 400 });
   }
+
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   try {
     const completion = await openai.chat.completions.create({

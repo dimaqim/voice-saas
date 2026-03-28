@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { toFile } from "openai";
-import { openai } from "@/lib/openai";
+import OpenAI, { toFile } from "openai";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -64,6 +63,8 @@ export async function POST(req: NextRequest) {
 
   // Whisper auto-detects language (Russian, Ukrainian, English, etc.).
   // Do not pass `language` — return transcript in the spoken language.
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
   let transcript: string;
   try {
     const result = await openai.audio.transcriptions.create({
