@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
 export async function DELETE(
   _req: Request,
@@ -14,6 +14,7 @@ export async function DELETE(
   }
 
   const { id } = params;
+  const prisma = getPrisma();
 
   const user = await prisma.user.findUnique({ where: { clerkId: userId } });
   if (!user) {

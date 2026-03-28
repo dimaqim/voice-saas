@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
 export async function POST() {
   const { userId } = auth();
@@ -20,6 +20,7 @@ export async function POST() {
     return NextResponse.json({ error: "No email on account" }, { status: 400 });
   }
 
+  const prisma = getPrisma();
   const user = await prisma.user.upsert({
     where: { clerkId: userId },
     create: {

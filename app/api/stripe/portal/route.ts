@@ -2,8 +2,8 @@ export const dynamic = 'force-dynamic';
 
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
+import { getPrisma } from "@/lib/prisma";
+import { getStripe } from "@/lib/stripe";
 
 function appBaseUrl() {
   return (
@@ -16,6 +16,9 @@ export async function GET() {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const prisma = getPrisma();
+  const stripe = getStripe();
 
   const user = await prisma.user.findUnique({ where: { clerkId: userId } });
   if (!user?.stripeCustomerId) {

@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { DashboardSuccessToast } from "@/components/DashboardSuccessToast";
 import { ChatGPTSidebar } from "@/components/ChatGPTSidebar";
 import { DashboardWorkspace } from "@/components/DashboardWorkspace";
@@ -16,6 +16,7 @@ export default async function DashboardPage({ searchParams }: Props) {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
 
+  const prisma = getPrisma();
   const user = await prisma.user.findUnique({ where: { clerkId: userId } });
   if (!user) redirect("/sign-in");
 

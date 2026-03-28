@@ -1,9 +1,10 @@
+export const dynamic = 'force-dynamic';
+
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI, { toFile } from "openai";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const maxDuration = 120;
 
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
 
   let dbUser = null;
   if (userId) {
+    const prisma = getPrisma();
     dbUser = await prisma.user.findUnique({ where: { clerkId: userId } });
     if (!dbUser || dbUser.subscriptionStatus !== "active") {
       return NextResponse.json(
@@ -93,6 +95,7 @@ export async function POST(req: NextRequest) {
 
   let recordingId: string | undefined;
   if (userId && dbUser) {
+    const prisma = getPrisma();
     const rec = await prisma.recording.create({
       data: {
         userId: dbUser.id,

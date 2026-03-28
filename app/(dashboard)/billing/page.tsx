@@ -3,8 +3,8 @@ export const dynamic = 'force-dynamic';
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
+import { getPrisma } from "@/lib/prisma";
+import { getStripe } from "@/lib/stripe";
 import { BillingClient } from "@/components/BillingClient";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ export default async function BillingPage() {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
 
+  const prisma = getPrisma();
   const user = await prisma.user.findUnique({ where: { clerkId: userId } });
   if (!user) redirect("/sign-in");
 
@@ -28,6 +29,7 @@ export default async function BillingPage() {
 
   if (user.subscriptionId) {
     try {
+      const stripe = getStripe();
       const sub = await stripe.subscriptions.retrieve(user.subscriptionId);
       displayActive = sub.status === "active" || sub.status === "trialing";
       const periodEnd = sub.items?.data?.[0]?.current_period_end;

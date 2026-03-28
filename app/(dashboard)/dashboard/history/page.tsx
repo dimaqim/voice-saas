@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { ChatGPTSidebar } from "@/components/ChatGPTSidebar";
 import { HistoryTable } from "@/components/HistoryTable";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ export default async function HistoryPage({ searchParams }: Props) {
 
   const page = Math.max(1, Number(searchParams.page) || 1);
 
+  const prisma = getPrisma();
   const user = await prisma.user.findUnique({
     where: { clerkId: userId },
   });

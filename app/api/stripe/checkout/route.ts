@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 function appBaseUrl() {
   return (
@@ -11,6 +11,7 @@ function appBaseUrl() {
 }
 
 async function createCheckoutSession(clerkUserId: string, email: string) {
+  const stripe = getStripe();
   const base = appBaseUrl();
   return stripe.checkout.sessions.create({
     mode: "subscription",
