@@ -1,9 +1,9 @@
+export const dynamic = 'force-dynamic';
+
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
-
-export const dynamic = "force-dynamic";
 
 function appBaseUrl() {
   return (

@@ -1,9 +1,10 @@
+export const dynamic = 'force-dynamic';
+
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { openai } from "@/lib/openai";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 type ChatMessage = { role: "user" | "assistant" | "system"; content: string };

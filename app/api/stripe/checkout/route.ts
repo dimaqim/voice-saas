@@ -1,8 +1,8 @@
+export const dynamic = 'force-dynamic';
+
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-
-export const dynamic = "force-dynamic";
 
 function appBaseUrl() {
   return (
