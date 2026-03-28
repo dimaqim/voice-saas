@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
     const result = await openai.audio.transcriptions.create({
       file: await toFile(buffer, filename),
       model: "whisper-1",
-      response_format: "text",
+      
     });
     transcript = result.text?.trim() ?? "";
   } catch (e) {
