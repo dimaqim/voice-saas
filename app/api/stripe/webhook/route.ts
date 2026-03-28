@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 
+export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 function subscriptionStatusFromStripe(
